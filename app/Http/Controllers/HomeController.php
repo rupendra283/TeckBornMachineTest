@@ -69,6 +69,36 @@ class HomeController extends Controller
         return redirect()->route('user.index')->with('status', 'user added succesfully');
     }
 
+    public function edit($id)
+    {
+
+
+        $user = User::findOrFail($id);
+        return view('users.edit', compact('user'));
+    }
+
+    public function update(Request $request, $id)
+
+    {
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255',],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+        $is_admin = 0;
+        if ($request->role == 'admin') {
+            $is_admin = 1;
+        }
+        $user = User::find($id);
+        $user->name = $request->get('name');
+        $user->email = $request->get('email');
+        $user->password = Hash::make($request->get('password'));
+        $user->is_admin =  $is_admin;
+        $user->save();
+        return redirect()->route('user.index')->with('success', 'user update succesfully');
+    }
+
+
     public function delete($id)
     {
         $user = User::findOrFail($id);

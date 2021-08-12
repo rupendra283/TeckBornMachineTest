@@ -5,14 +5,14 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
-                        User List
-                        <a href="{{ route('user.create') }}" class="btn btn-primary btn-sm float-right">Add Users</a>
+                        Post
+                        <a href="{{ route('post.create') }}" class="btn btn-primary btn-sm float-right">Add
+                            Post</a>
                     </div>
-
                     <div class="card-body">
-                        @if (session('status'))
+                        @if (session('success'))
                             <div class="alert alert-success" role="alert">
-                                {{ session('status') }}
+                                {{ session('success') }}
                             </div>
                         @endif
                         <div class="row">
@@ -21,8 +21,11 @@
                                     <thead class="thead-light">
                                         <tr>
                                             <th>sr No</th>
-                                            <th>Users</th>
-                                            <th>Role</th>
+                                            <th>Title</th>
+                                            <th>Image</th>
+                                            <th>Category</th>
+                                            <th>Created By</th>
+                                            <th>Description</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -30,19 +33,23 @@
                                         @php
                                             $sr = 1;
                                         @endphp
-                                        @foreach ($users as $user)
+                                        @foreach ($posts as $post)
 
                                             <tr>
                                                 <td>{{ $sr++ }}</td>
-                                                <td>{{ $user->name }}</td>
-                                                <td>{{ $user->is_admin ? 'Admin' : 'Editor' }}</td>
+                                                <td>{{ $post->title }}</td>
                                                 <td>
-                                                    <a href="{{ route('user.delete', $user->id) }}"
+                                                    <img src="{{ Storage::url($post->image) }}" width="60px" alt="">
+                                                </td>
+                                                <td>{{ $post->category_id }}</td>
+                                                <td>{{ $post->user->name }}</td>
+                                                <td>{{ $post->description }}</td>
+                                                <td>
+                                                    <a href="{{ route('post.delete', $post->id) }}"
                                                         class="btn btn-danger btn-sm">Delete</a>
-                                                    <a href="{{ route('user.edit', $user->id) }}"
+                                                    <a href="{{ route('post.edit', $post->id) }}"
                                                         class="btn btn-success btn-sm">Edit</a>
                                                 </td>
-
                                             </tr>
                                         @endforeach
                                     </tbody>

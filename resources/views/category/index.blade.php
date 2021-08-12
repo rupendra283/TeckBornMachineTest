@@ -5,14 +5,14 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">
-                        User List
-                        <a href="{{ route('user.create') }}" class="btn btn-primary btn-sm float-right">Add Users</a>
+                        Category
+                        <a href="{{ route('category.create') }}" class="btn btn-primary btn-sm float-right">Add
+                            Category</a>
                     </div>
-
                     <div class="card-body">
-                        @if (session('status'))
+                        @if (session('success'))
                             <div class="alert alert-success" role="alert">
-                                {{ session('status') }}
+                                {{ session('success') }}
                             </div>
                         @endif
                         <div class="row">
@@ -21,8 +21,8 @@
                                     <thead class="thead-light">
                                         <tr>
                                             <th>sr No</th>
-                                            <th>Users</th>
-                                            <th>Role</th>
+                                            <th>Category</th>
+                                            <th>Description</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -30,19 +30,18 @@
                                         @php
                                             $sr = 1;
                                         @endphp
-                                        @foreach ($users as $user)
+                                        @foreach ($categories as $category)
 
                                             <tr>
                                                 <td>{{ $sr++ }}</td>
-                                                <td>{{ $user->name }}</td>
-                                                <td>{{ $user->is_admin ? 'Admin' : 'Editor' }}</td>
+                                                <td>{{ $category->title }}</td>
+                                                <td>{{ $category->description }}</td>
                                                 <td>
-                                                    <a href="{{ route('user.delete', $user->id) }}"
+                                                    <a href="{{ route('category.delete', $category->id) }}"
                                                         class="btn btn-danger btn-sm">Delete</a>
-                                                    <a href="{{ route('user.edit', $user->id) }}"
+                                                    <a href="{{ route('category.edit', $category->id) }}"
                                                         class="btn btn-success btn-sm">Edit</a>
                                                 </td>
-
                                             </tr>
                                         @endforeach
                                     </tbody>
