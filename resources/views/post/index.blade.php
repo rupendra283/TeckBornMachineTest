@@ -45,10 +45,19 @@
                                                 <td>{{ $post->user->name }}</td>
                                                 <td>{{ $post->description }}</td>
                                                 <td>
-                                                    <a href="{{ route('post.delete', $post->id) }}"
-                                                        class="btn btn-danger btn-sm">Delete</a>
-                                                    <a href="{{ route('post.edit', $post->id) }}"
-                                                        class="btn btn-success btn-sm">Edit</a>
+                                                    @if (Auth::user()->is_admin)
+                                                        <a href="{{ route('post.delete', $post->id) }}"
+                                                            class="btn btn-danger btn-sm">Delete</a>
+                                                        <a href="{{ route('post.edit', $post->id) }}"
+                                                            class="btn btn-success btn-sm">Edit</a>
+                                                    @else
+                                                        @if (Auth::user()->id == $post->user_id)
+                                                            <a href="{{ route('post.delete', $post->id) }}"
+                                                                class="btn btn-danger btn-sm">Delete</a>
+                                                            <a href="{{ route('post.edit', $post->id) }}"
+                                                                class="btn btn-success btn-sm">Edit</a>
+                                                        @endif
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endforeach

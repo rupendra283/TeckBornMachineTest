@@ -44,7 +44,7 @@
                                         <label for="category">Category</label>
                                         <select name="category" class="custom-select-sm">
                                             @foreach ($categories as $category)
-
+                                                <option value="">Select Category</option>
                                                 <option value="{{ $category->title }}">{{ $category->title }}</option>
                                             @endforeach
 

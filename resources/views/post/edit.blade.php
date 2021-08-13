@@ -10,12 +10,13 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-6">
-                                <form action="{{ route('post.update') }}" method="POST">
+                                <form action="{{ route('post.update', $post->id) }}" method="POST">
                                     @csrf
+                                    @method('PUT')
                                     <div class="form-group">
                                         <label for="title">Title</label>
                                         <input id="title" class="form-control" type="text" name="title"
-                                            value="{{ $category->title }}">
+                                            value="{{ $post->title }}">
                                         @error('title')
                                             <span class="invalid-feedback" role="alert">
                                                 <strong>{{ $message }}</strong>
@@ -26,7 +27,7 @@
                                     <div class="form-group">
                                         <label for="image">Image</label>
                                         <input id="image" class="form-control" type="text" name="image"
-                                            value="{{ $category->image }}">
+                                            value="{{ $post->image }}">
 
                                         @error('image')
                                             <span class="invalid-feedback" role="alert">
@@ -38,18 +39,22 @@
                                     <div class="form-group">
                                         <label for="description">Description</label>
                                         <input id="description" class="form-control" type="text" name="description"
-                                            value="{{ $category->description }}">
+                                            value="{{ $post->description }}">
                                     </div>
                                     <div class="form-group">
                                         <label for="status">Status</label>
                                         <input id="status" class="form-control" type="text" name="status"
-                                            value="{{ $category->description }}">
+                                            value="{{ $post->description }}">
                                     </div>
                                     <div class="form-group row">
                                         <label for="category" class="col-md-4 col-form-label text-md-right">Category</label>
                                         <select name="role" class="custom-select-sm">
-                                            <option selected>{{ $category->title ? 'title' : '' }}</option>
-                                            <option value="admin">{{ $category->title }}</option>
+                                            @foreach ($categories as $category)
+
+                                                <option value="{{ $category->title }}">{{ $category->title }}</option>
+                                            @endforeach
+
+
                                         </select>
 
                                     </div>

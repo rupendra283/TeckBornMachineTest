@@ -18,9 +18,9 @@ class PostController extends Controller
      */
     public function index()
     {
-        $user = Auth::user();
+        // $user = Auth::user();
 
-        $posts = Post::where('user_id', $user->id)->with('user')->orderBy('created_at', 'desc')->get();
+        $posts = Post::with('user')->orderBy('created_at', 'desc')->get();
         return  view('post.index', compact('posts'));
     }
 
@@ -89,9 +89,11 @@ class PostController extends Controller
      * @param  \App\Models\Post  $post
      * @return \Illuminate\Http\Response
      */
-    public function edit(Post $post)
+    public function edit($id)
     {
-        //
+        $categories = Category::all();
+        $post = Post::findOrFail($id);
+        return view('post.edit', compact('post', 'categories'));
     }
 
     /**

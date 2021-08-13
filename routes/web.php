@@ -23,17 +23,29 @@ Route::get('/', function () {
 
 Auth::routes();
 //admin routes
-Route::get('admin/home', [HomeController::class, 'adminHome'])->name('admin.home')->middleware('is_admin');
-Route::get('user', [HomeController::class, 'userIndex'])->name('user.index');
-Route::get('user/create', [HomeController::class, 'userCreate'])->name('user.create');
-Route::post('user/store', [HomeController::class, 'userStore'])->name('user.store');
-Route::get('user/edit{id}', [HomeController::class, 'edit'])->name('user.edit');
-Route::put('user/update{id}', [HomeController::class, 'update'])->name('user.update');
-Route::get('user/delete{id}', [HomeController::class, 'delete'])->name('user.delete');
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-//category
-Route::resource('category', CategoryController::class);
-Route::get('category{id}', [CategoryController::class, 'destroy'])->name('category.delete');
-//post
-Route::resource('post', PostController::class);
-Route::get('post{id}', [PostController::class, 'destroy'])->name('post.delete');
+Route::middleware(['auth'])->group(function () {
+
+    //authenticated users can access these routes
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::resource('post', PostController::class);
+    Route::get('post{id}', [PostController::class, 'destroy'])->name('post.delete');
+});
+
+Route::prefix('admin')->middleware(['auth', 'is_admin'])->group(function () {
+    //authenticated with role admin can access these routes
+    Route::get('/home', [HomeController::class, 'adminHome'])->name('admin.home');
+
+    Route::name('user.')->group(function () {
+
+        Route::get('/user', [HomeController::class, 'userIndex'])->name('index');
+        Route::get('user/create', [HomeController::class, 'userCreate'])->name('create');
+        Route::post('user/store', [HomeController::class, 'userStore'])->name('store');
+        Route::get('user/edit{id}', [HomeController::class, 'edit'])->name('edit');
+        Route::put('user/update{id}', [HomeController::class, 'update'])->name('update');
+        Route::get('user/delete{id}', [HomeController::class, 'delete'])->name('delete');
+    });
+
+    //category
+    Route::resource('category', CategoryController::class);
+    Route::get('category{id}', [CategoryController::class, 'destroy'])->name('category.delete');
+});
